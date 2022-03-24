@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Ray.h"
+#include "Color.h"
+#include "HittableList.h"
+#include "Sphere.h"
 
 #include <iostream>
 
@@ -21,27 +24,16 @@ float hit_sphere(const point3& centre, float radius, const Ray& r)
 	}
 }
 
-color ray_color(const Ray& r)
+color ray_color(const Ray& r, const Hittable& world)
 {
-	//check for sphere hit
-	auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
-	if (t > 0.0f)
+	hit_record rec;
+	if (world.hit(r, 0, infinity, rec))
 	{
-		vec3 N = normalize(r.at(t) - vec3(0, 0, -1));
-		return 0.5f * color(N.x + 1, N.y + 1, N.z + 1);
+		return 0.5f * (rec.normal + color(1, 1, 1));
 	}
-	//return the background otherwise
 	vec3 unit_direction(glm::normalize(r.direction()));
-	t = 0.5f * (unit_direction.y + 1.0);
+	auto t = 0.5f * (unit_direction.y + 1.0f);
 	return (1.0f - t) * color(1.0f, 1.0f, 1.0f) + (t * color(0.5f, 0.7f, 1.0f));
-}
-
-void write_color(std::ostream& out, color pixel_color) 
-{
-	//Write the translated color [0,255] value of each color component;
-	out << static_cast<int>(255.999 * pixel_color.x) << " "
-		<< static_cast<int>(255.999 * pixel_color.y) << " "
-		<< static_cast<int>(255.999 * pixel_color.z) << "\n";
 }
 
 int main()
@@ -50,6 +42,9 @@ int main()
 	const int image_width = 400;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
 
+	HittableList world;
+	world.add(std::make_shared<Sphere>(point3(0, 0, -1), 0.5));
+	world.add(std::make_shared<Sphere>(point3(0, -100.5, -1), 100));
 
 	auto viewport_height = 2.0f;
 	auto viewport_width = aspect_ratio * viewport_height;
@@ -70,7 +65,7 @@ int main()
 			auto u = float(i) / (image_width - 1);
 			auto v = float(j) / (image_height - 1);
 			Ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-			color pixel_color = ray_color(r);
+			color pixel_color = ray_color(r, world);
 			write_color(std::cout, pixel_color);
 		}
 	}
