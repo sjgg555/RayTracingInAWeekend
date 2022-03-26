@@ -5,17 +5,17 @@
 class Sphere : public Hittable
 {
 public:
-	Sphere(point3 cen, float r)
+	Sphere(Point3 cen, float r)
 		: centre(cen), radius(r)
 	{};
-	virtual bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+	virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
 private:
-	point3 centre;
+	Point3 centre;
 	float radius;
 };
 
-bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
 	vec3 oc = r.origin() - centre;
 	auto a = glm::length2(r.direction());
@@ -38,7 +38,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
 	rec.t = root;
 	rec.p = r.at(rec.t);
 	vec3 outward_normal = (rec.p - centre) / radius;
-	rec.set_face_normal(r, outward_normal);
+	rec.SetFaceNormal(r, outward_normal);
 
 	return true;
 }

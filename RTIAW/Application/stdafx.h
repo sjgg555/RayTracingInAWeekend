@@ -5,7 +5,7 @@
 
 using namespace glm;
 
-using point3 = vec3;
-using color = vec3;
+using Point3 = vec3;
+using Color = vec3;
 
 const float infinity = std::numeric_limits<double>::infinity();
