@@ -44,14 +44,17 @@
     <ClInclude Include="Sphere.h">
       <Filter>Hittables</Filter>
     </ClInclude>
-    <ClInclude Include="HittableList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HittableList.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Hittables</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 #pragma once
 #include "stdafx.h"
 #include "Ray.h"
+#include "Utilities.h"
+
+class Material;
 
 struct HitRecord
 {
@@ -8,6 +11,7 @@ struct HitRecord
 	vec3 normal;
 	float t;
 	bool front_face;
+	std::shared_ptr<Material> material;
 
 	inline void SetFaceNormal(const Ray& r, const vec3& outward_normal)
 	{
